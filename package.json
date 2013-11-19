@@ -9,6 +9,7 @@
     "express": "3.3.4",
     "jade": "*",
     "passport" : "*",
+    "passport-local": "*",
     "less" : "*",
     "mongodb":"1.2.14",
     "monk": "0.7.1"
