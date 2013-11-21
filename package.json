@@ -12,6 +12,13 @@
     "passport-local": "*",
     "less" : "*",
     "mongodb":"1.2.14",
-    "monk": "0.7.1"
+    "monk": "0.7.1",
+    "mocha": "*",
+    "should": ">= 0.0.1",
+    "supertest": "*"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha -w"
   }
+
 }

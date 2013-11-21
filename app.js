@@ -13,6 +13,7 @@ var express = require('express')
 
 var app = express();
  
+ module.exports = app;
 
 // all environments
 app.set('port', process.env.PORT || 3000);
