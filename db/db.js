@@ -19,7 +19,7 @@ var Messages = mongoose.model('messages', messageSchema, 'test2');
 // This is called to init the database
 exports.dbinit = function(){
 	console.log(app);
-	mongoose.connect('mongodb://localhost/mydb');
+	mongoose.connect('mongodb://tunadbtest01.cloudapp.net:16666/tunadb');
 	var db = mongoose.connection;
 
 	db.on('error', console.error.bind(console, 'connection error:'));
