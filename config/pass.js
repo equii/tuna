@@ -13,16 +13,18 @@ passport.deserializeUser(function(id,done){
 });
 
 passport.use(new LocalStrategy(function(username, password, done) {
-	//TODO: find user etc
-	console.log('1fdf');
+	// Finding user in db
 	console.log('username +pass = ' + username + ' ' + password);
 	console.log("Searching in db now");
-	db.findMessages();
-	console.log("Finished searchign in db");
-	if(username === 'test' && password === 'test')
-		return done(null, {username: 'test', password: 'test'});
-
-	return done(null, false, {message: 'Error'});
+	
+	db.authenticateUserInDB(username, password, function(found, user){
+		if(found){
+			console.log("Finished searching in db and found match");
+			return done(null, {username: user.username, password: user.password});
+		}
+		else
+			return done(null, false, {message: 'Error'});
+	});
 }));
 
 exports.ensureAuthenticated = function ensureAuthenticated(req, res, next) {
