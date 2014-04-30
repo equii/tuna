@@ -9,3 +9,12 @@ block content
       input(type="text", name="username")
       input(type="password", name="password")
       input(type="submit", value="login")
+
+
+  h1= Create
+  p Please, create user
+  div.createbox
+    form(name="create", action="/create", method="post")
+      input(type="text", name="in_username")
+      input(type="password", name="in_password")
+      input(type="submit", value="create")

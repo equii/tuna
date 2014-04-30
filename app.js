@@ -21,7 +21,6 @@ module.exports = app;
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
-app.set('dbstring', 'mongodb://localhost/mydb');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.cookieParser());
@@ -33,21 +32,23 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+// open a connection to the db
+db.dbinit();
+
 app.get('/', pass.ensureAuthenticated, routes.index);
 app.get('/login', user_routes.login);
 app.post('/login', user_routes.postLogin);
+app.post('/create', user_routes.create);
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-  db.dbinit();
+  console.log('Express server listening on port ' + app.get('port'));  
 });
 
-// calling the db init
+
+
 
