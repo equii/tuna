@@ -55,10 +55,10 @@ exports.createUserInDB = function(in_user, in_password, callback){
 
 // This is called to init the database
 exports.dbinit = function(){
-	mongoose.connect('mongodb://tunadbtest01.cloudapp.net:16666/tunadb');
+	mongoose.connect('mongodb://tunadbRWUser:tunapassword1!@tunadbtest01.cloudapp.net:16666/tunadb?authSource=admin');
 	var db = mongoose.connection;
 
-	db.on('error', console.error.bind(console, 'connection error:'));
+	db.on('error', console.error.bind(console, 'DB connection error'));
 
 	db.once('open', function callback () {
   		console.log("Connected to db");
