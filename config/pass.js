@@ -14,17 +14,17 @@ passport.deserializeUser(function(id,done){
 
 passport.use(new LocalStrategy(function(username, password, done) {
 	// Finding user in db
-	console.log('username +pass = ' + username + ' ' + password);
-	console.log("Searching in db now");
+	console.log('Passport.use with data username +pass = ' + username + ' ' + password);
 	
-	db.authenticateUserInDB(username, password, function(found, user){
-		if(found){
-			console.log("Finished searching in db and found match");
-			return done(null, {username: user.username, password: user.password});
-		}
-		else
-			return done(null, false, {message: 'Error'});
-	});
+	
+	// db.authenticateUserInDB(username, password, function(found, user){
+	// 	if(found){
+	// 		console.log("Finished searching in db and found match");
+	// 		return done(null, {username: user.username, password: user.password});
+	// 	}
+	// 	else
+	// 		return done(null, false, {message: 'Error'});
+	// });
 }));
 
 exports.ensureAuthenticated = function ensureAuthenticated(req, res, next) {
