@@ -1,17 +1,15 @@
 var passport = require('passport')
-	, db = require('../db/db');
+	, mongoose = require('mongoose')
+	, userModel = mongoose.model('User');
 
 exports.login = function(req,res) {
-	res.render('login', {user: req.user, message: req.session.messages});
+	res.render('login', {title : "Please login", user: req.user, message: req.session.messages});
 }
 
 exports.postLogin = function(req,res,next) {
+	// TODO: create the authentication logic here
 	passport.authenticate('local', function(err, user, info) {
 		if(err) return next(err);
-
-		console.log('user: ' + user);
-
-		console.log('info: ' + info);
 
 		if(!user) {
 			req.session.messages = [info.message];
@@ -27,11 +25,20 @@ exports.postLogin = function(req,res,next) {
 	})(req,res,next);
 };
 
-exports.create = function(req,res,next) {
-	console.log(Date()+ " Creating user " + req.body.in_username);
-	db.createUserInDB(req.body.in_username, req.body.in_password, function(cb_user){
-		console.log(Date() + " Created user " + req.body.in_username);
-		console.log("Callback value of user: " + cb_user);
-	});	
-	res.redirect('/login');
+exports.create = function(req,res) {
+	res.render('newuser');
+}
+
+exports.postCreate = function(req,res,next) {
+	// creates a new instance of user model - a schema defined in models/user
+	var user = new userModel(req.body);
+	console.log("exports.create: Printing user schema object " + user);
+	user.save(function(err){	// saves the user into the database
+		if(err){
+			console.log("exports.create: Error creating saving user " + err);
+			return res.render('create');
+		}
+	});
+	console.log("Saved a new user into DB, whoohoo!");
+	return res.redirect('/login');
 };

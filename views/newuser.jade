@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  p Please, enter a new username and password
+  div.createbox
+    form(name="create", action="/create", method="post")
+      input(type="text", name="username")
+      input(type="password", name="password")
+      input(type="submit", value="create")

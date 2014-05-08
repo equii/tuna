@@ -10,6 +10,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path') 
   , db = require('./db/db')
+  , userModel = require('./models/user')
   , user_routes = require('./routes/user');
 
 var app  = express();
@@ -40,10 +41,12 @@ if ('development' == app.get('env')) {
 // open a connection to the db
 db.dbinit();
 
+//setup routes
 app.get('/', pass.ensureAuthenticated, routes.index);
 app.get('/login', user_routes.login);
+app.get('/create', user_routes.create);
 app.post('/login', user_routes.postLogin);
-app.post('/create', user_routes.create);
+app.post('/create', user_routes.postCreate);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));  
