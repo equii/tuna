@@ -8,16 +8,26 @@ exports.login = function(req,res) {
 
 exports.postLogin = function(req,res,next) {
 	// TODO: create the authentication logic here
+	console.log("exports.postLogin");
 	passport.authenticate('local', function(err, user, info) {
+		console.log('passport.authenticate callback user ' + err);
+		console.log('passport.authenticate callback user ' + user);
+		console.log('passport.authenticate callback info ' + info);
 		if(err) return next(err);
 
 		if(!user) {
 			req.session.messages = [info.message];
+            console.log("info.message is " + info.message)
 			return res.redirect('/login');
 		}
 
 		req.logIn(user, function(err){
-			if(err) {return next(err);}
+            console.log("info.message is " + info.message)
+			if(err) {
+                return next(err);
+            }
+
+            req.session.messages = info.message;
 
 			return res.redirect('/');
 		});

@@ -1,30 +1,35 @@
 var passport = require('passport')
 	, LocalStrategy = require('passport-local').Strategy
-	, db = require('../db/db');
+    , mongoose = require('mongoose')
+    , userModel = mongoose.model('User');
 
 
 passport.serializeUser(function(user, done){
-	done(null, 1);
+	done(null, user.id);
 });
 
 passport.deserializeUser(function(id,done){
-	//db.getbyid...
-	done(null, {username: 'test', password: 'test'});
+    User.findOne({ _id: id }, function (err, user) {
+        done(err, user)
+    });
 });
 
 passport.use(new LocalStrategy(function(username, password, done) {
 	// Finding user in db
 	console.log('Passport.use with data username +pass = ' + username + ' ' + password);
-	
-	
-	// db.authenticateUserInDB(username, password, function(found, user){
-	// 	if(found){
-	// 		console.log("Finished searching in db and found match");
-	// 		return done(null, {username: user.username, password: user.password});
-	// 	}
-	// 	else
-	// 		return done(null, false, {message: 'Error'});
-	// });
+
+    userModel.findOne({username:username}, function(err, user){
+        if(err){
+            return done(err);
+        }
+        if(!user){
+            done(null, false, {message : "Authentication failed"});
+        }
+        if(user.password != password){ //TODO rewrite this to compare password hash, preferably move to user model
+            done(null, false, {message : "Authentication failed due to password mismatch"}); //TODO: clean this up, using for debug purposes only
+        }
+        return done(null, true, {message : "Authentication success"});
+    });
 }));
 
 exports.ensureAuthenticated = function ensureAuthenticated(req, res, next) {

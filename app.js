@@ -5,12 +5,12 @@
 
 var express = require('express')
   , routes = require('./routes')
+  , userModel = require('./models/user')
   , pass = require('./config/pass')
   , passport = require('passport')
   , http = require('http')
   , path = require('path') 
   , db = require('./db/db')
-  , userModel = require('./models/user')
   , user_routes = require('./routes/user');
 
 var app  = express();
