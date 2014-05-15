@@ -9,26 +9,25 @@ passport.serializeUser(function(user, done){
 });
 
 passport.deserializeUser(function(id,done){
-    User.findOne({ _id: id }, function (err, user) {
+    userModel.findOne({ _id: id }, function (err, user) {
         done(err, user)
     });
 });
 
 passport.use(new LocalStrategy(function(username, password, done) {
-	// Finding user in db
-	console.log('Passport.use with data username +pass = ' + username + ' ' + password);
+	// Finding user in db model
 
     userModel.findOne({username:username}, function(err, user){
         if(err){
             return done(err);
         }
         if(!user){
-            done(null, false, {message : "Authentication failed"});
+            done(null, false, {message : "Authentication failed: user not found"});
         }
         if(user.password != password){ //TODO rewrite this to compare password hash, preferably move to user model
-            done(null, false, {message : "Authentication failed due to password mismatch"}); //TODO: clean this up, using for debug purposes only
+            done(null, false, {message : "Authentication failed: password mismatch"}); //TODO: clean this up, using for debug purposes only
         }
-        return done(null, true, {message : "Authentication success"});
+        return done(null, user, {message : "Authentication success"});
     });
 }));
 
