@@ -1,9 +1,12 @@
 extends layout
 
 block content
-  p Please, enter a new username and password
+  br
+  p To register, please enter a new username and password  
   div.createbox
     form(name="create", action="/create", method="post")
-      input(type="text", name="username")
-      input(type="password", name="password")
-      input(type="submit", value="create")
+      input(type="text", class='inputbox', name="username", placeholder="New username")
+      br
+      input(type="password", class='inputbox', name="password", placeholder="Password")
+      br
+      input(type="submit", class='mac_button', value="Create")

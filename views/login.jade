@@ -1,11 +1,15 @@
 extends layout
 
 block content
-  h1= Login
-  p Please, enter your credentials
+  br
+  p To login, please enter your credentials
 
   div.loginbox
     form(name="login", action="/login", method="post")
-      input(type="text", name="username")
-      input(type="password", name="password")
-      input(type="submit", value="Login")
+      input(type="text", class='inputbox', name="username", placeholder='Username')
+      br
+      input(type="password", class='inputbox', name="password", placeholder='Password')
+      br
+      input(type="submit", class='mac_button', value="Login")
+
+  p Custom message: #{msg}
