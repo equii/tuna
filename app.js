@@ -11,7 +11,8 @@ var express = require('express')
   , http = require('http')
   , path = require('path') 
   , db = require('./db/db')
-  , user_routes = require('./routes/user');
+  , user_routes = require('./routes/user')
+  , api_user = require('./routes/api/api_user');
 
 var app  = express();
 
@@ -33,6 +34,7 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -48,6 +50,9 @@ app.get('/create', user_routes.create);
 app.post('/login', user_routes.postLogin);
 app.post('/create', user_routes.postCreate);
 app.get('/logout', user_routes.logout);
+
+// setup API routes
+app.post('/api/login', api_user.login);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));  

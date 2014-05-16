@@ -22,10 +22,10 @@ passport.use(new LocalStrategy(function(username, password, done) {
             return done(err);
         }
         if(!user){
-            done(null, false, {message : "Authentication failed: user not found"});
+            return done(null, false, {message : "Authentication failed: user not found"});
         }
         if(user.password != password){ //TODO rewrite this to compare password hash, preferably move to user model
-            done(null, false, {message : "Authentication failed: password mismatch"}); //TODO: clean this up, using for debug purposes only
+            return done(null, false, {message : "Authentication failed: password mismatch"}); //TODO: clean this up, using for debug purposes only
         }
         return done(null, user, {message : "Authentication success"});
     });
