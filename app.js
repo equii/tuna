@@ -43,16 +43,20 @@ if ('development' == app.get('env')) {
 // open a connection to the db
 db.dbinit();
 
-//setup routes
+//setup UI routes
 app.get('/', pass.ensureAuthenticated, routes.index);
-app.get('/login', user_routes.login);
-app.get('/create', user_routes.create);
-app.post('/login', user_routes.postLogin);
-app.post('/create', user_routes.postCreate);
-app.get('/logout', user_routes.logout);
+app.get('/login', user_routes.GETlogin);
+app.post('/login', user_routes.POSTlogin);
+
+app.get('/register', user_routes.GETregister);
+app.post('/register', user_routes.POSTregister);
+
+app.get('/logout', user_routes.GETlogout);
 
 // setup API routes
-app.post('/api/login', api_user.login);
+app.post('/api/v1/login', api_user.POSTlogin);
+app.post('/api/v1/register', api_user.POSTregister);
+app.get('/api/v1/logout', api_user.GETlogout);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));  
