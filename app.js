@@ -37,14 +37,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    // open a connection to the db
+    db.dbinit(true);
+    app.use(express.errorHandler());
 }
-
-// open a connection to the db
-db.dbinit();
+else{
+    // open a connection to the db
+    db.dbinit();
+}
 
 //setup UI routes
 app.get('/', pass.ensureAuthenticated, routes.index);
+
 app.get('/login', user_routes.GETlogin);
 app.post('/login', user_routes.POSTlogin);
 

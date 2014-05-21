@@ -5,7 +5,7 @@ var should = require('should');
 var request = require('supertest');
 
 describe('Passport: authentication', function(){
-
+    this.timeout(10000); // increasing timeout due to network latency when connecting to the DB
 	it('should redirect to /login if not authenticated', function(done){
 		var post ={
 			username: 'fake',
