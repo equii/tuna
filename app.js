@@ -12,7 +12,8 @@ var express = require('express')
   , path = require('path') 
   , db = require('./db/db')
   , user_routes = require('./routes/user')
-  , api_user = require('./routes/api/api_user');
+  , api_user = require('./routes/api/api_user')
+  , config = require('./config');
 
 var app  = express();
 
@@ -37,16 +38,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-    // open a connection to the db
-    db.dbinit(true);
     app.use(express.errorHandler());
 }
-else{
-    // open a connection to the db
-    db.dbinit();
-}
 
-//setup UI routes
+// init the database connection
+db.dbinit();
+
+// setup UI routes
 app.get('/', pass.ensureAuthenticated, routes.index);
 
 app.get('/login', user_routes.GETlogin);

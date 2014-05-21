@@ -2,22 +2,13 @@ var mongoose = require('mongoose');
 var config = require('../config');
 
 // This is called from app.js to init the database
-exports.dbinit = function(uselocaldb){
-    var connectionString = '';
-
+exports.dbinit = function(){
     var connect = function(connString){
-        mongoose.connect(connString,
+        mongoose.connect(process.env.MONGODB_URI,
             { server: { socketOptions: { keepAlive: 1 } } });
     }
 
-    if(uselocaldb){
-        console.log("Opening connection to LOCAL mongodb instance: " + config.db.mongodb_local);
-        connect(config.db.mongodb_local);
-    }
-    else{
-        console.log("Opening connection to REMOTE mongodb instance:" + config.db.mongodb);
-        connect(config.db.mongodb);
-    }
+    connect();
 
 	mongoose.connection.on('error', function(err){
 		console.log("Database connection error. Details:")
