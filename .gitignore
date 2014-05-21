@@ -57,3 +57,7 @@ node_modules
 #Sublime text
 ################
 *.sublime-*
+
+# config.js file with database connection strings
+#################################################
+config.js

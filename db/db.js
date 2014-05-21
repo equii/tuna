@@ -1,22 +1,27 @@
 var mongoose = require('mongoose');
+var config = require('../config');
 
 // This is called from app.js to init the database
 exports.dbinit = function(){
-	mongoose.connect('mongodb://tunadbRWUser:tunapassword1!@tunadbtest01.cloudapp.net:16666/tunadb?ssl=true&authSource=admin', 
-		{ server: { socketOptions: { keepAlive: 1 } } });
-	var db = mongoose.connection;
+    var connect = function(connString){
+        mongoose.connect(process.env.MONGODB_URI,
+            { server: { socketOptions: { keepAlive: 1 } } });
+    }
 
-	db.on('error', function(err){
+    connect();
+
+	mongoose.connection.on('error', function(err){
 		console.log("Database connection error. Details:")
 		console.log(err);
 	});
 
-	db.on('disconnected', function () {
+    mongoose.connection.on('disconnected', function () {
+        console.log("Database disconnected. Trying to reconnect.")
   		connect()
 	});
 
-	db.once('open', function callback () {
-  		console.log("Database connection established");
+    mongoose.connection.once('open', function callback () {
+  		console.log("Database connection established.");
   	});
 }
 
