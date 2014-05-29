@@ -16,7 +16,8 @@
     "monk": "0.7.1",
     "mocha": "*",
     "should": ">= 0.0.1",
-    "supertest": "*"
+    "supertest": "*",
+    "bcrypt": ">= 0.7.8"
   },
   "scripts": {
     "test": "node_modules/.bin/mocha -w"
