@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var config = require('../config');
 
 // This is called from app.js to init the database
 exports.dbinit = function(){
