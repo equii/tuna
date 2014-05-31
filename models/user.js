@@ -11,7 +11,6 @@ var userSchema = new Schema({
     lastName : {type: String, default : ''},
 	createDataTime: { type: Date, default: Date.now },
 	password_hashed : {type: String, default : ''},
-    salt : {type: String, default : ''},
 	isActive : { type: Boolean, default : true}
 });
 
@@ -21,7 +20,6 @@ var userSchema = new Schema({
 userSchema.virtual('password')
     .set(function(password) {
         this._password = password
-        this.salt = this.makeSalt()
         this.password_hashed = this.encryptPassword(password)
     })
     .get(function() { return this._password })
@@ -30,12 +28,8 @@ userSchema.methods.encryptPassword = function(password){
     if(!password){
         return '';
     }
-    var encrypted_password = bcrypt.hashSync(password, this.salt);
+    var encrypted_password = bcrypt.hashSync(password, 10);
     return encrypted_password;
-}
-
-userSchema.methods.makeSalt = function(){
-    return bcrypt.genSaltSync(Math.random());
 }
 
 userSchema.methods.authenticate = function(try_password){
@@ -44,7 +38,7 @@ userSchema.methods.authenticate = function(try_password){
 
 // Methods related to validation of fields and data in them
 userSchema.path('email').validate(function (email, fn) {
-    var User = mongoose.model('User')
+    var User = mongoose.model('User', userSchema);
 
     // Check only when it is a new user or when email field is modified
     if (this.isNew || this.isModified('email')) {
@@ -52,7 +46,29 @@ userSchema.path('email').validate(function (email, fn) {
             fn(!err && users.length === 0)
         })
     } else fn(true)
-}, 'Email already exists')
+}, 'The email address is already in use, try logging in with it')
 
+userSchema.path('email').validate(function (email) {
+    return email.length
+}, 'The email cannot be blank, please try again')
+
+userSchema.path('email').validate(function(email) {
+    var pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return pattern.test(email);
+}, 'You have entered an invalid email, make sure it looks something like yourname@domain.com');
+
+userSchema.path('password_hashed').validate(function(password_hashed){
+    return password_hashed.length;
+},'Your password cannot be blank, please try again')
+
+// Pre-save hook to validate password length; password is a virtual field and cannot have a .validate method
+userSchema.pre('save', function(next){
+  if(this.password.length <= 3 || this.password.length >= 24){
+      next(new Error('Your password has to be between 4 and 24 characters long'));
+  }
+  else{
+      next();
+  }
+})
 
 mongoose.model('User', userSchema)

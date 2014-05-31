@@ -1,6 +1,7 @@
 var passport = require('passport')
 	, mongoose = require('mongoose')
-	, userModel = mongoose.model('User');
+	, userModel = mongoose.model('User')
+    , utils = require('../lib/utils')
 
 exports.GETlogin = function(req, res) {
     if(req.isAuthenticated()){
@@ -46,15 +47,14 @@ exports.POSTregister = function(req,res,next) {
     var user = new userModel(req.body);
     user.save(function(err){	// saves the user into the database
         if(err){
-            return res.render('newuser', {title : "Tuna: registration", msg: err.errors.message});
+            req.session.messages = utils.errors(err);
+            return res.redirect('/register');
             }
-        });
-    console.log("Saved a new user into DB, whoohoo!");
-    req.session.messages = 'Please login with your new credentials now';
-    return res.redirect('/login');
-
-    req.session.messages = 'Username and password must be 3-16 characters long';
-    return res.redirect('/register');
+        else{
+            console.log("Saved a new user into DB, whoohoo!");
+            req.session.messages = 'Please login with your new credentials now';
+            return res.redirect('/login');
+        }});
 };
 
 exports.GETlogout = function(req, res){

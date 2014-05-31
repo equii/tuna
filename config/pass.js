@@ -26,12 +26,12 @@ passport.use(new LocalStrategy({
             return done(err);
         }
         if(!user){
-            return done(null, false, {message : "Authentication failed: user not found"});
+            return done(null, false, {message : "We couldn't find you, please try again"});
         }
         if(!user.authenticate(password)){
-            return done(null, false, {message : "Authentication failed: password mismatch"}); //TODO: clean this up, using for debug purposes only
+            return done(null, false, {message : "We couldn't find you, please try again"});
         }
-        return done(null, user, {message : "Authentication success"});
+        return done(null, user);
     });
 }));
 
