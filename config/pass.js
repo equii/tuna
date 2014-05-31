@@ -14,20 +14,24 @@ passport.deserializeUser(function(id,done){
     });
 });
 
-passport.use(new LocalStrategy(function(username, password, done) {
+passport.use(new LocalStrategy({
+        usernameField : 'email',
+        passwordField : 'password'
+    },
+    function(email, password, done) {
 	// Finding user in db model
 
-    userModel.findOne({username:username}, function(err, user){
+    userModel.findOne({email:email}, function(err, user){
         if(err){
             return done(err);
         }
         if(!user){
-            return done(null, false, {message : "Authentication failed: user not found"});
+            return done(null, false, {message : "We couldn't find you, please try again"});
         }
-        if(user.password != password){ //TODO rewrite this to compare password hash, preferably move to user model
-            return done(null, false, {message : "Authentication failed: password mismatch"}); //TODO: clean this up, using for debug purposes only
+        if(!user.authenticate(password)){
+            return done(null, false, {message : "We couldn't find you, please try again"});
         }
-        return done(null, user, {message : "Authentication success"});
+        return done(null, user);
     });
 }));
 

@@ -1,6 +1,7 @@
 var passport = require('passport')
     , mongoose = require('mongoose')
-    , userModel = mongoose.model('User');
+    , userModel = mongoose.model('User')
+    , utils = require('../../lib/utils');
 
 exports.POSTlogin = function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
@@ -29,18 +30,13 @@ exports.GETlogout = function(req, res){
 
 exports.POSTregister = function(req,res,next) {
     // creates a new instance of user model - a schema defined in models/user
-    // TODO: check the incoming data here even more
-    if(req.body.username && req.body.username
-        && req.body.username.length >=3 && req.body.username.length <= 16
-        && req.body.password.length >=3 && req.body.password.length <= 16){
-        var user = new userModel(req.body);
-        user.save(function(err){	// saves the user into the database
-            if(err){
-                return res.send(500);
-            }
-        });
-        console.log("Saved a new user into DB via API, whoohoo!");
-        return res.send(201);
-    }
-    return res.send(400);
+
+    var user = new userModel(req.body);
+    user.save(function(err){	// saves the user into the database
+        if(err){
+            return res.send(400, utils(err)); // TODO parse the error in more details return 40X error codes if validation of data fails, otherwise return 500
+        }
+    });
+    console.log("Saved a new user into DB via API, whoohoo!");
+    return res.send(201);
 };

@@ -1,6 +1,7 @@
 var passport = require('passport')
 	, mongoose = require('mongoose')
-	, userModel = mongoose.model('User');
+	, userModel = mongoose.model('User')
+    , utils = require('../lib/utils')
 
 exports.GETlogin = function(req, res) {
     if(req.isAuthenticated()){
@@ -42,22 +43,18 @@ exports.GETregister = function(req,res) {
 
 exports.POSTregister = function(req,res,next) {
 	// creates a new instance of user model - a schema defined in models/user
-    // TODO: validate this data even more and move to shared util
-    if(req.body.username && req.body.username
-        && req.body.username.length >=3 && req.body.username.length <= 16
-        && req.body.password.length >=3 && req.body.password.length <= 16){
-        var user = new userModel(req.body);
-        user.save(function(err){	// saves the user into the database
-            if(err){
-                return next(err);
+
+    var user = new userModel(req.body);
+    user.save(function(err){	// saves the user into the database
+        if(err){
+            req.session.messages = utils.errors(err);
+            return res.redirect('/register');
             }
-        });
-        console.log("Saved a new user into DB, whoohoo!");
-        req.session.messages = 'Please login with your new credentials now';
-        return res.redirect('/login');
-    }
-    req.session.messages = 'Username and password must be 3-16 characters long';
-    return res.redirect('/register');
+        else{
+            console.log("Saved a new user into DB, whoohoo!");
+            req.session.messages = 'Please login with your new credentials now';
+            return res.redirect('/login');
+        }});
 };
 
 exports.GETlogout = function(req, res){
