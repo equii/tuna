@@ -12,8 +12,7 @@ var express = require('express')
   , path = require('path') 
   , db = require('./db/db')
   , user_routes = require('./routes/user')
-  , api_user = require('./routes/api/api_user')
-  , config = require('./config');
+  , api_user = require('./routes/api/api_user');
 
 var app  = express();
 
@@ -39,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // development only
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
+    var config = require('./config');
 }
 
 // init the database connection
