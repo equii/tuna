@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 // This is called from app.js to init the database
 exports.dbinit = function(){
     var connect = function(connString){
-        mongoose.connect(process.env.MONGODB_URI,
+        mongoose.connect(process.env.CUSTOMCONNSTR_MONGODB_URI,
             { server: { socketOptions: { keepAlive: 1 } } });
     }
 
