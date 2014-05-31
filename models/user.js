@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 var Schema = mongoose.Schema;
 
 /*
@@ -28,12 +28,12 @@ userSchema.methods.encryptPassword = function(password){
     if(!password){
         return '';
     }
-    var encrypted_password = bcrypt.hashSync(password, 10);
+    var encrypted_password = bcrypt.hashSync(password);
     return encrypted_password;
 }
 
 userSchema.methods.authenticate = function(try_password){
-    return bcrypt.compareSync(try_password, this.password_hashed) // validates that the incoming password. when hashed, is identical to the one stored
+    return bcrypt.compareSync(try_password, this.password_hashed) // validates that the incoming password, when hashed, is identical to the one stored
 }
 
 // Methods related to validation of fields and data in them

@@ -25,7 +25,6 @@ exports.POSTlogin = function(req,res,next) {
 			if(err) {
                 return next(err);
             }
-            req.session.messages = info.message;
 			return res.redirect('/');
 		});
 

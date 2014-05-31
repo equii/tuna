@@ -26,10 +26,10 @@ passport.use(new LocalStrategy({
             return done(err);
         }
         if(!user){
-            return done(null, false, {message : "We couldn't find you, please try again"});
+            return done(null, false, {message : "We couldn't find your credentials, please try again"});
         }
         if(!user.authenticate(password)){
-            return done(null, false, {message : "We couldn't find you, please try again"});
+            return done(null, false, {message : "We couldn't find your credentials, please try again"});
         }
         return done(null, user);
     });
