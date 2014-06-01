@@ -5,6 +5,7 @@
 
 var express = require('express')
   , routes = require('./routes')
+  , userModel = require('./models/user') // this need to be called before pass so that it can pickup the schema
   , pass = require('./config/pass')
   , passport = require('passport')
   , http = require('http')
