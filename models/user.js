@@ -9,7 +9,7 @@ var userSchema = new Schema({
 	email: {type: String, default : ''},
     firstName : {type: String, default : ''},
     lastName : {type: String, default : ''},
-	createDataTime: { type: Date, default: Date.now },
+	createDateTime: { type: Date, default: Date.now },
 	password_hashed : {type: String, default : ''},
 	isActive : { type: Boolean, default : true}
 });

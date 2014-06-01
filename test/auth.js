@@ -10,7 +10,7 @@ var should = require('should');
 var request = require('supertest');
 var test_utils = require('./test_utils');
 
-describe('Passport: authentication', function(){
+describe('[Test Suite] Login, logout and registration', function(){
     this.timeout(10000); // increasing timeout due to network latency when connecting to the DB
 	it('1. Login negative', function(done){
 		var post ={
@@ -33,7 +33,7 @@ describe('Passport: authentication', function(){
 	it('2. Login positive', function(done){
 		var post = {
 			email: 'test@test.com',
-			password: 'test'
+			password: 'password'
 		};
 
 		request(app)
@@ -109,7 +109,7 @@ describe('Passport: authentication', function(){
     it('5. Logout positive', function(done){
         var post = {
             email: 'test@test.com',
-            password: 'test'
+            password: 'password'
         };
 
         request(app)
