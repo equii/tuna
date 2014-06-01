@@ -20,7 +20,7 @@
     "bcrypt-nodejs": "*"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha -w"
+    "test": "node_modules/.bin/mocha"
   }
 
 }
