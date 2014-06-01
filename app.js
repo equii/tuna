@@ -5,7 +5,6 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , userModel = require('./models/user')
   , pass = require('./config/pass')
   , passport = require('passport')
   , http = require('http')
