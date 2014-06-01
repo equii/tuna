@@ -38,7 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // development only
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
-    var config = require('./config');
+    var config = require('./config'); // TODO: need to put the mongodb local connection string here
 }
 
 // init the database connection
