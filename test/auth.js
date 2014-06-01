@@ -2,7 +2,8 @@
 
 /**
  *  Contains basic test cases for login and registration.
- *
+ *  Requirements: before running these, make sure that you have test@test.com with pass='password' in the DB
+ *  If not, run the tests twice - one of them will actually create this demo data and fail
  */
 
 var app = require('../app');

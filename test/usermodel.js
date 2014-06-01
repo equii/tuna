@@ -1,8 +1,12 @@
 var should = require('should');
 var mongoose = require('mongoose');
-//var mongoose = require('../models/user');
 var userModel = mongoose.model('User');
 
+/**
+ *  Contains unit tests for the user model implementation
+ *  Requirements: before running these, make sure that you have test@test.com with pass='password' in the DB
+ *  If not, run the tests twice - one of them will actually create this demo data and fail
+ */
 
 describe('[Test Suite] User model unit tests', function() {
     this.timeout(10000); // increasing timeout due to network latency when connecting to the DB
